@@ -6,10 +6,10 @@ import requests, string, random
 
 def scrape_and_clean(url):
     req = requests.get(url)
-    soup = BeautifulSoup(req.content, "html.parser")
+    soup = BeautifulSoup(req.content)
     
     #get quotes from page
-    div_quotes = soup.find_all("div", attrs={"class":"quoteText"})
+    #div_quotes = soup("div", attrs={"class":"quoteText"}) #soup("div") == soup.find_all("div")
     quotes = ''
     for q in div_quotes:
         author = ""
@@ -30,7 +30,7 @@ def scrape_and_clean(url):
                 quote += line
 
         quote = q.contents[0].encode("ascii", errors="ignore").decode("utf-8")
-        quote = "\"" + quote.strip() + "\" "
+        quote = "\"" + quote.strip() + "\""
         quotes += quote + '\n\n' + '-' + author + "#"
     quotes_to_return = filter(lambda x: x in string.printable, quotes) #clean
     return quotes_to_return
